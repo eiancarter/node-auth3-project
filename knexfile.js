@@ -8,6 +8,17 @@ module.exports = {
       filename: './data/node_auth_data.sqlite3'
     },
     useNullAsDefault: true,
+    pool: {
+      afterCreate: (conn, done) => {
+        conn.run('PRAGMA foreign_keys = ON', done)
+      },
+    },
+    migrations: {
+      directory: './data/migrations',
+    },
+    seeds: {
+      directory: './data/seeds',
+    }
   },
 
   staging: {
