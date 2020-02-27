@@ -12,7 +12,7 @@ server.use(express.json());
 server.use(cors());
 
 server.use("/api/auth", authRouter);
-server.use("/api/users", restricted, checkRole, usersRouter);
+server.use("/api/users", restricted, checkDepartment("12"), usersRouter);
 
 server.get("/", (req, res) => {
     res.send("it's working");
@@ -20,16 +20,16 @@ server.get("/", (req, res) => {
 
 module.exports = server;
 
-function checkRole(role) {
+function checkDepartment(department) {
     return (req, res, next) => {
         if (
             req.decodedToken && 
-            req.decodedToken.role && 
-            req.decodedToken.role.toLowerCase() === role
+            req.decodedToken.department && 
+            req.decodedToken.department.toLowerCase() === department
         ) {
             next();
         } else {
-            res.status(403).json({ message: "role is not authorized"})
+            res.status(403).json({ message: "department is not authorized"})
         }
     };
 }
